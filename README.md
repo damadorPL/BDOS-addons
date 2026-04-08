@@ -109,7 +109,7 @@ Skrypt diagnostyczny konta Google Ads. Sprawdza:
 - wyniki silnika reguł (`RuleEngine`) — lista problemów z podziałem na severity
 - typy rozszerzeń kampanii (sitelinki, callouts)
 
-Skrypt jest zahardkodowany na konkretne konto (`novdom.pl-aktualne`). Przed użyciem zmień alias konta.
+Skrypt jest zahardkodowany na konkretne konto (`loremipsum`). Przed użyciem zmień alias konta.
 
 **Użycie:**
 
@@ -126,7 +126,7 @@ Skrypt do wykrywania sezonowych haseł w treściach reklamowych. Sprawdza:
 
 Szukane hasła: `black friday`, `walentynki`, `święta`, `wielkanoc`, `dzień matki`, `lato`, `zima`, `promocja`, `rabat`, `wyprzedaż`.
 
-Skrypt jest zahardkodowany na konkretne konto (`novdom.pl-aktualne`). Przed użyciem zmień alias konta.
+Skrypt jest zahardkodowany na konkretne konto (`loremipsum`). Przed użyciem zmień alias konta.
 
 **Użycie:**
 

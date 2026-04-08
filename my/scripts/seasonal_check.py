@@ -4,7 +4,7 @@ from bdos import connect
 from collections import defaultdict
 
 sys.stdout.reconfigure(encoding='utf-8')
-ctx = connect('novdom.pl-aktualne')
+ctx = connect('loremipsum')
 
 seasonal_keywords = ['black friday', 'walentynki', 'święta', 'wielkanoc', 'dzień matki', 'lato', 'zima', 'promocja', 'rabat', 'wyprzedaż']
 

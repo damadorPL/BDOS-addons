@@ -6,7 +6,7 @@ from bdos import connect
 from bdos.engine.rule_engine import RuleEngine
 
 sys.stdout.reconfigure(encoding='utf-8')
-ctx = connect('novdom.pl-aktualne')
+ctx = connect('loremipsum')
 
 # 1. Sprawdzenie aktywności (Kampanie z wydatkami 30 dni)
 print("--- AKTYWNE KAMPANIE ---")
