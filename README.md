@@ -1,25 +1,15 @@
-# BDOS Skills
+# BDOS Addons
 
-Zestaw dodatkowych skilli do projektu BDOS AI.
-
-Repo zawiera obecnie:
-
-**Skille (`SKILL.md`)**
-- `my/skills/gemini-setup/SKILL.md` - przygotowuje konfigurację Gemini CLI dla BDOS
-- `my/skills/codex-setup/SKILL.md` - przygotowuje konfigurację Codexa dla BDOS
-
-**Dodatkowe skrypty**
-- `my/exclude_content_labels.py` - narzędzie do wykluczania śmieciowych content labels w Google Ads
-
-`exclude_content_labels.py` jest skryptem Pythona w katalogu `my/` (nie jest skillem `SKILL.md`).
-
-Te skille nie są samodzielną aplikacją. To gotowe pliki `SKILL.md`, które kopiujesz do swojego projektu BDOS AI.
+Zestaw dodatkowych skilli i skryptów rozszerzających projekt BDOS AI.
 
 ## Zawartość repo
 
 ```text
 my/
-  exclude_content_labels.py            # skrypt do wykluczeń content labels w Google Ads
+  scripts/
+    exclude_content_labels.py          # skrypt do wykluczeń content labels w Google Ads
+    diag_script.py                     # diagnostyka konta: kampanie, reguły, rozszerzenia
+    seasonal_check.py                  # sprawdzanie sezonowych haseł w reklamach i rozszerzeniach
   skills/
     codex-setup/
       SKILL.md
@@ -27,7 +17,11 @@ my/
       SKILL.md
 ```
 
-## Co robi każdy skill
+---
+
+## Skille (`my/skills/`)
+
+Gotowe pliki `SKILL.md`, które kopiujesz do katalogu `my/skills/` w swoim projekcie BDOS AI.
 
 ### `gemini-setup`
 
@@ -75,7 +69,13 @@ Uruchom `codex-setup` ponownie, gdy:
 - zmienisz `my/AGENTS.md`
 - chcesz odświeżyć `AGENTS.md` po zmianach w `CLAUDE.md`
 
-### `exclude_content_labels`
+---
+
+## Skrypty (`my/scripts/`)
+
+Skrypty Pythona w katalogu `my/scripts/`, uruchamiane bezpośrednio przez BDOS. Nie są skillami `SKILL.md`.
+
+### `exclude_content_labels.py`
 
 Narzędzie do automatycznego wykluczania niechcianych kategorii treści (content labels) w Google Ads na poziomie konta.
 
@@ -90,18 +90,53 @@ Wykluczenia są stosowane na poziomie `CustomerNegativeCriterion` i dotyczą wsz
 
 ```bash
 # Podgląd bez zmian (domyślnie dry-run)
-.venv/Scripts/python.exe my/exclude_content_labels.py --dry-run
+.venv/Scripts/python.exe my/scripts/exclude_content_labels.py --dry-run
 
 # Zastosuj wykluczenia na wszystkich kontach
-.venv/Scripts/python.exe my/exclude_content_labels.py
+.venv/Scripts/python.exe my/scripts/exclude_content_labels.py
 
 # Zastosuj wykluczenia tylko na jednym koncie
-.venv/Scripts/python.exe my/exclude_content_labels.py --alias moje-konto
+.venv/Scripts/python.exe my/scripts/exclude_content_labels.py --alias moje-konto
 ```
 
 Skrypt automatycznie pomija konta, które już mają skonfigurowane te wykluczenia.
 
-## Instalacja
+### `diag_script.py`
+
+Skrypt diagnostyczny konta Google Ads. Sprawdza:
+
+- aktywne kampanie z wydatkami z ostatnich 30 dni (nazwa, koszt, kliknięcia, konwersje)
+- wyniki silnika reguł (`RuleEngine`) — lista problemów z podziałem na severity
+- typy rozszerzeń kampanii (sitelinki, callouts)
+
+Skrypt jest zahardkodowany na konkretne konto (`novdom.pl-aktualne`). Przed użyciem zmień alias konta.
+
+**Użycie:**
+
+```bash
+.venv/Scripts/python.exe my/scripts/diag_script.py
+```
+
+### `seasonal_check.py`
+
+Skrypt do wykrywania sezonowych haseł w treściach reklamowych. Sprawdza:
+
+- rozszerzenia kampanii (sitelinki, callouts, promocje) pod kątem sezonowych słów kluczowych
+- nagłówki i opisy reklam RSA
+
+Szukane hasła: `black friday`, `walentynki`, `święta`, `wielkanoc`, `dzień matki`, `lato`, `zima`, `promocja`, `rabat`, `wyprzedaż`.
+
+Skrypt jest zahardkodowany na konkretne konto (`novdom.pl-aktualne`). Przed użyciem zmień alias konta.
+
+**Użycie:**
+
+```bash
+.venv/Scripts/python.exe my/scripts/seasonal_check.py
+```
+
+---
+
+## Instalacja skilli
 
 ### Wymagania
 
@@ -115,14 +150,14 @@ Przykład na Windows PowerShell:
 
 ```powershell
 Copy-Item -Recurse -Force `
-  "C:\Users\damador\Documents\Code\BDOS-skills\my\skills\*" `
+  "C:\Users\damador\Documents\Code\BDOS-addons\my\skills\*" `
   "C:\sciezka\do\BDOS-AI\my\skills\"
 ```
 
 Przykład na macOS lub Linux:
 
 ```bash
-cp -R /sciezka/do/BDOS-skills/my/skills/* /sciezka/do/BDOS-AI/my/skills/
+cp -R /sciezka/do/BDOS-addons/my/skills/* /sciezka/do/BDOS-AI/my/skills/
 ```
 
 Po skopiowaniu przejdź do repo BDOS AI i odśwież konfigurację:
@@ -136,12 +171,12 @@ bdos update --regenerate
 Jeśli chcesz trzymać skille w osobnym repo i aktualizować je niezależnie:
 
 ```bash
-git clone https://github.com/TWOJ-LOGIN/BDOS-skills.git
+git clone https://github.com/TWOJ-LOGIN/BDOS-addons.git
 ```
 
 Kopię BDOS AI można nabyć na https://bdos.ai/
 
-Następnie kopiuj wybrane skille z `BDOS-skills/my/skills/` do `BDOS-AI/my/skills/` i uruchamiaj:
+Następnie kopiuj wybrane skille z `BDOS-addons/my/skills/` do `BDOS-AI/my/skills/` i uruchamiaj:
 
 ```bash
 cd BDOS-AI
@@ -161,9 +196,7 @@ Potem użyj odpowiedniego skilla:
 - dla Gemini CLI: uruchom `gemini-setup`
 - dla Codexa: uruchom `codex-setup`
 
-Po uruchomieniu `codex-setup` skille BDOS zostaną zsynchronizowane do `.agents/skills/<name>/SKILL.md` w katalogu projektu.
-
-## Jak używać
+## Jak używać skilli
 
 Po instalacji możesz poprosić agenta o konfigurację odpowiedniego środowiska.
 
@@ -197,6 +230,7 @@ Gdy zmienisz zawartość któregoś skilla:
 
 ## Uwagi
 
-- Repo nie zawiera całego BDOS AI, tylko dodatkowe skille
+- Repo nie zawiera całego BDOS AI, tylko dodatkowe skille i skrypty
 - Skille są przeznaczone do wgrania do `my/skills/` w istniejącej instancji BDOS
 - `gemini-setup` i `codex-setup` są skillami konfiguracyjnymi, a nie skillami do analizy kampanii
+- Skrypty w `my/` są zahardkodowane na konkretne konta — dostosuj je do swoich potrzeb przed użyciem
