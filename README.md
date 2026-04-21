@@ -19,6 +19,18 @@ my/
 
 ---
 
+## Konfiguracja Gemini i Codex (import instrukcji)
+
+Pliki `.gemini/GEMINI.md` i `.agents/AGENTS.md` w tym repo zawierają tylko jeden wpis:
+
+```
+@./CLAUDE.md
+```
+
+Oznacza to, że Gemini CLI i Codex wczytują instrukcje projektowe bezpośrednio z `CLAUDE.md` przez mechanizm importu (`@`-imports). Nie ma potrzeby utrzymywania osobnych plików instrukcji — wystarczy edytować `CLAUDE.md`, a zmiany obowiązują we wszystkich trzech klientach: Claude Code, Gemini CLI i Codex.
+
+---
+
 ## Skille (`my/skills/`)
 
 Gotowe pliki `SKILL.md`, które kopiujesz do katalogu `my/skills/` w swoim projekcie BDOS AI.
