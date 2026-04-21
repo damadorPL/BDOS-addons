@@ -5,6 +5,10 @@ Zestaw dodatkowych skilli i skryptów rozszerzających projekt BDOS AI.
 ## Zawartość repo
 
 ```text
+.agents/
+  AGENTS.md                            # importuje CLAUDE.md przez @-import (Codex)
+.gemini/
+  GEMINI.md                            # importuje CLAUDE.md przez @-import (Gemini CLI)
 my/
   scripts/
     exclude_content_labels.py          # skrypt do wykluczeń content labels w Google Ads
@@ -28,6 +32,16 @@ Pliki `.gemini/GEMINI.md` i `.agents/AGENTS.md` w tym repo zawierają tylko jede
 ```
 
 Oznacza to, że Gemini CLI i Codex wczytują instrukcje projektowe bezpośrednio z `CLAUDE.md` przez mechanizm importu (`@`-imports). Nie ma potrzeby utrzymywania osobnych plików instrukcji — wystarczy edytować `CLAUDE.md`, a zmiany obowiązują we wszystkich trzech klientach: Claude Code, Gemini CLI i Codex.
+
+### Autogenerowanie CLAUDE.md po aktualizacji BDOS
+
+`CLAUDE.md` jest generowany automatycznie przez BDOS. Po każdej aktualizacji BDOS (np. `git pull` w repo BDOS AI) należy go zregenerować, żeby Gemini CLI i Codex dostały nowe instrukcje:
+
+```bash
+bdos update --regenerate
+```
+
+Ponieważ `.gemini/GEMINI.md` i `.agents/AGENTS.md` importują `CLAUDE.md` przez `@./CLAUDE.md`, nie trzeba nic więcej robić — nowa wersja `CLAUDE.md` jest automatycznie widoczna dla wszystkich trzech klientów przy następnym uruchomieniu.
 
 ---
 
