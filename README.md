@@ -79,36 +79,39 @@ Plik `my/GEMINI.md` i `my/AGENTS.md` to miejsce na własne preferencje i instruk
 
 Gotowe pliki `SKILL.md`, które kopiujesz do katalogu `my/skills/` w swoim projekcie BDOS AI.
 
-Oba skille konfiguracyjne działają tak samo: wywołują `my/scripts/sync_agents.py`, który synchronizuje skille i komendy do obu klientów naraz.
+Oba skille konfiguracyjne działają na tej samej zasadzie: zamiast wykonywać wiele kroków inline, uruchamiają `my/scripts/sync_agents.py` przez subprocess. Skrypt obsługuje Gemini CLI i Codex jednocześnie w jednym przebiegu.
 
-### `gemini-setup`
+### `gemini-setup/SKILL.md`
 
-Skill dla Gemini CLI. Po uruchomieniu wywołuje `sync_agents.py`, który:
+Skill dla Gemini CLI. Po aktywacji uruchamia `sync_agents.py` przez subprocess:
 
-- synchronizuje skille do `.gemini/skills/`
-- synchronizuje komendy do `.gemini/commands/`
-- generuje `GEMINI.md` na bazie `CLAUDE.md` + `my/GEMINI.md`
-- tworzy `my/GEMINI.md` (jeśli nie istnieje)
+```python
+import sys, subprocess
+result = subprocess.run(
+    [sys.executable, "my/scripts/sync_agents.py"],
+    capture_output=True, text=True, encoding="utf-8"
+)
+print(result.stdout)
+```
 
-Uruchom `gemini-setup` ponownie, gdy:
+Skrypt synchronizuje skille do `.gemini/skills/`, komendy do `.gemini/commands/`, generuje `GEMINI.md` i tworzy `my/GEMINI.md` (jeśli nie istnieje).
+
+Uruchom ponownie, gdy:
 
 - dodasz nowy skill do `my/skills/`
-- zaktualizujesz BDOS i zmienia się `bdos/data/claude/skills/`
+- zaktualizujesz BDOS (`bdos/data/claude/skills/` się zmienia)
 - zmienisz `my/GEMINI.md`
 
-### `codex-setup`
+### `codex-setup/SKILL.md`
 
-Skill dla Codexa. Po uruchomieniu wywołuje `sync_agents.py`, który:
+Skill dla Codexa. Po aktywacji uruchamia `sync_agents.py` przez subprocess (identyczny blok jak wyżej).
 
-- synchronizuje skille do `.agents/skills/`
-- synchronizuje komendy do `.agents/commands/`
-- generuje `AGENTS.md` na bazie `CLAUDE.md` + `my/AGENTS.md`
-- tworzy `my/AGENTS.md` (jeśli nie istnieje)
+Skrypt synchronizuje skille do `.agents/skills/`, komendy do `.agents/commands/`, generuje `AGENTS.md` i tworzy `my/AGENTS.md` (jeśli nie istnieje).
 
-Uruchom `codex-setup` ponownie, gdy:
+Uruchom ponownie, gdy:
 
 - dodasz nowy skill do `my/skills/`
-- zaktualizujesz BDOS i zmienia się `bdos/data/claude/skills/`
+- zaktualizujesz BDOS (`bdos/data/claude/skills/` się zmienia)
 - zmienisz `my/AGENTS.md`
 
 ---
