@@ -9,7 +9,7 @@ Pliki źródłowe (edytowane ręcznie):
 ```text
 my/
   scripts/
-    sync_agents.py           # synchronizuje skille i komendy do Gemini CLI i Codex
+    sync_agents.py              # synchronizuje skille i komendy do Gemini CLI i Codex
     exclude_content_labels.py
     diag_script.py
     seasonal_check.py
@@ -79,51 +79,37 @@ Plik `my/GEMINI.md` i `my/AGENTS.md` to miejsce na własne preferencje i instruk
 
 Gotowe pliki `SKILL.md`, które kopiujesz do katalogu `my/skills/` w swoim projekcie BDOS AI.
 
+Oba skille konfiguracyjne działają tak samo: wywołują `my/scripts/sync_agents.py`, który synchronizuje skille i komendy do obu klientów naraz.
+
 ### `gemini-setup`
 
-Skill dla Gemini CLI. Jego celem jest:
+Skill dla Gemini CLI. Po uruchomieniu wywołuje `sync_agents.py`, który:
 
-- wygenerowanie lub odświeżenie `GEMINI.md` (odpowiednik `CLAUDE.md` dla Gemini)
-- utworzenie i synchronizacja `.gemini/skills/` (natywne skille Gemini)
-- przygotowanie `my/GEMINI.md` na prywatne instrukcje użytkownika
-
-Używaj go, gdy chcesz, żeby Gemini CLI widział skille BDOS natywnie przez `/skills`.
-
-Po uruchomieniu:
-
-- skille z `bdos/data/claude/skills/` oraz `my/skills/` są synchronizowane do `.gemini/skills/<name>/SKILL.md`
-- Gemini CLI wykrywa te skille natywnie, co pozwala na ich automatyczną aktywację na podstawie opisu (intent matching)
-- `GEMINI.md` staje się głównym plikiem instrukcji, a Twoje prywatne preferencje są ładowane z `my/GEMINI.md`
+- synchronizuje skille do `.gemini/skills/`
+- synchronizuje komendy do `.gemini/commands/`
+- generuje `GEMINI.md` na bazie `CLAUDE.md` + `my/GEMINI.md`
+- tworzy `my/GEMINI.md` (jeśli nie istnieje)
 
 Uruchom `gemini-setup` ponownie, gdy:
 
 - dodasz nowy skill do `my/skills/`
 - zaktualizujesz BDOS i zmienia się `bdos/data/claude/skills/`
 - zmienisz `my/GEMINI.md`
-- chcesz odświeżyć `GEMINI.md` po zmianach w `CLAUDE.md`
 
 ### `codex-setup`
 
-Skill dla Codexa. Jego celem jest:
+Skill dla Codexa. Po uruchomieniu wywołuje `sync_agents.py`, który:
 
-- skopiowanie lub odświeżenie skilli BDOS w `.agents/skills/`
-- wygenerowanie lub odświeżenie `AGENTS.md`
-- utworzenie `my/AGENTS.md`
-
-Używaj go, gdy chcesz skonfigurować projekt BDOS pod Codexa.
-
-Po uruchomieniu:
-
-- skille z `bdos/data/claude/skills/` oraz `my/skills/` są synchronizowane do `.agents/skills/<name>/SKILL.md`
-- Codex może wykrywać te skille natywnie z katalogu projektu, analogicznie do `.gemini/skills/`
-- `AGENTS.md` pozostaje plikiem instrukcji projektowych, ale nie musi już zawierać ręcznie utrzymywanej listy skilli
+- synchronizuje skille do `.agents/skills/`
+- synchronizuje komendy do `.agents/commands/`
+- generuje `AGENTS.md` na bazie `CLAUDE.md` + `my/AGENTS.md`
+- tworzy `my/AGENTS.md` (jeśli nie istnieje)
 
 Uruchom `codex-setup` ponownie, gdy:
 
 - dodasz nowy skill do `my/skills/`
 - zaktualizujesz BDOS i zmienia się `bdos/data/claude/skills/`
 - zmienisz `my/AGENTS.md`
-- chcesz odświeżyć `AGENTS.md` po zmianach w `CLAUDE.md`
 
 ---
 
