@@ -2,6 +2,32 @@
 
 Zestaw dodatkowych skilli i skryptów rozszerzających projekt BDOS AI.
 
+## Spis treści
+
+- [Zawartość repo](#zawartość-repo)
+- [Konfiguracja Gemini i Codex](#konfiguracja-gemini-i-codex)
+  - [Co robi skrypt](#co-robi-skrypt)
+  - [Użycie](#użycie)
+  - [Kiedy uruchamiać](#kiedy-uruchamiać)
+  - [Prywatne instrukcje użytkownika](#prywatne-instrukcje-użytkownika)
+- [Skille (`my/skills/`)](#skille-myskills)
+  - [`gemini-setup/SKILL.md`](#gemini-setupskillmd)
+  - [`codex-setup/SKILL.md`](#codex-setupskillmd)
+- [Skrypty (`my/scripts/`)](#skrypty-myscripts)
+  - [`sync_agents.py`](#sync_agentspy)
+  - [`exclude_content_labels.py`](#exclude_content_labelspy)
+  - [`diag_script.py`](#diag_scriptpy)
+  - [`seasonal_check.py`](#seasonal_checkpy)
+- [Instalacja skilli](#instalacja-skilli)
+  - [Wymagania](#wymagania)
+  - [Opcja 1 - ręcznie skopiuj skille](#opcja-1---ręcznie-skopiuj-skille)
+  - [Opcja 2 - sklonuj to repo obok BDOS AI i kopiuj z niego](#opcja-2---sklonuj-to-repo-obok-bdos-ai-i-kopiuj-z-niego)
+- [Aktywacja po instalacji](#aktywacja-po-instalacji)
+- [Aktualizacja](#aktualizacja)
+- [Uwagi](#uwagi)
+
+---
+
 ## Zawartość repo
 
 Pliki źródłowe (edytowane ręcznie):
