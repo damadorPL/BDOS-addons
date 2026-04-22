@@ -4,44 +4,74 @@ Zestaw dodatkowych skilli i skryptów rozszerzających projekt BDOS AI.
 
 ## Zawartość repo
 
+Pliki źródłowe (edytowane ręcznie):
+
 ```text
-.agents/
-  AGENTS.md                            # importuje CLAUDE.md przez @-import (Codex)
-.gemini/
-  GEMINI.md                            # importuje CLAUDE.md przez @-import (Gemini CLI)
 my/
   scripts/
-    exclude_content_labels.py          # skrypt do wykluczeń content labels w Google Ads
-    diag_script.py                     # diagnostyka konta: kampanie, reguły, rozszerzenia
-    seasonal_check.py                  # sprawdzanie sezonowych haseł w reklamach i rozszerzeniach
+    sync_agents.py           # synchronizuje skille i komendy do Gemini CLI i Codex
+    exclude_content_labels.py
+    diag_script.py
+    seasonal_check.py
   skills/
-    codex-setup/
-      SKILL.md
-    gemini-setup/
-      SKILL.md
+    codex-setup/SKILL.md
+    gemini-setup/SKILL.md
+  GEMINI.md                  # prywatne instrukcje użytkownika dla Gemini CLI
+  AGENTS.md                  # prywatne instrukcje użytkownika dla Codexa
+```
+
+Pliki generowane przez `sync_agents.py` (nie edytuj ręcznie):
+
+```text
+GEMINI.md                    # CLAUDE.md + skille + my/GEMINI.md
+AGENTS.md                    # CLAUDE.md + skille + my/AGENTS.md
+.gemini/
+  skills/<name>/SKILL.md
+  commands/<name>.md
+.agents/
+  skills/<name>/SKILL.md
+  commands/<name>.md
 ```
 
 ---
 
-## Konfiguracja Gemini i Codex (import instrukcji)
+## Konfiguracja Gemini i Codex
 
-Pliki `.gemini/GEMINI.md` i `.agents/AGENTS.md` w tym repo zawierają tylko jeden wpis:
+Skrypt `my/scripts/sync_agents.py` synchronizuje skille i komendy BDOS do Gemini CLI i Codex oraz generuje pliki konfiguracyjne dla obu klientów.
 
-```
-@./CLAUDE.md
-```
+### Co robi skrypt
 
-Oznacza to, że Gemini CLI i Codex wczytują instrukcje projektowe bezpośrednio z `CLAUDE.md` przez mechanizm importu (`@`-imports). Nie ma potrzeby utrzymywania osobnych plików instrukcji — wystarczy edytować `CLAUDE.md`, a zmiany obowiązują we wszystkich trzech klientach: Claude Code, Gemini CLI i Codex.
+1. Zbiera skille z `bdos/data/claude/skills/` i `my/skills/`
+2. Zbiera komendy z `bdos/data/claude/commands/` i `my/commands/`
+3. Synchronizuje skille i komendy do `.gemini/skills/`, `.gemini/commands/`, `.agents/skills/`, `.agents/commands/`
+4. Generuje `GEMINI.md` = `CLAUDE.md` + lista skilli + zawartość `my/GEMINI.md`
+5. Generuje `AGENTS.md` = `CLAUDE.md` + lista skilli + zawartość `my/AGENTS.md`
 
-### Autogenerowanie CLAUDE.md po aktualizacji BDOS
-
-`CLAUDE.md` jest generowany automatycznie przez BDOS. Po każdej aktualizacji BDOS (np. `git pull` w repo BDOS AI) należy go zregenerować, żeby Gemini CLI i Codex dostały nowe instrukcje:
+### Użycie
 
 ```bash
-bdos update --regenerate
+# Synchronizuj (tylko zmienione pliki)
+.venv/Scripts/python.exe my/scripts/sync_agents.py
+
+# Sprawdź stan bez zmian
+.venv/Scripts/python.exe my/scripts/sync_agents.py --check
+
+# Wymuś kopię wszystkich plików (ignoruj mtime)
+.venv/Scripts/python.exe my/scripts/sync_agents.py --force
 ```
 
-Ponieważ `.gemini/GEMINI.md` i `.agents/AGENTS.md` importują `CLAUDE.md` przez `@./CLAUDE.md`, nie trzeba nic więcej robić — nowa wersja `CLAUDE.md` jest automatycznie widoczna dla wszystkich trzech klientów przy następnym uruchomieniu.
+### Kiedy uruchamiać
+
+- po `bdos update` (nowe skille core)
+- po dodaniu `my/skills/<name>/SKILL.md`
+- po dodaniu `my/commands/<name>.md`
+- po edycji `my/GEMINI.md` lub `my/AGENTS.md`
+
+### Prywatne instrukcje użytkownika
+
+Plik `my/GEMINI.md` i `my/AGENTS.md` to miejsce na własne preferencje i instrukcje — są dołączane na końcu wygenerowanego `GEMINI.md` / `AGENTS.md`. Skrypt tworzy je automatycznie przy pierwszym uruchomieniu.
+
+`GEMINI.md` i `AGENTS.md` w katalogu głównym są generowane automatycznie — nie edytuj ich ręcznie, zmiany zostaną nadpisane przy kolejnym uruchomieniu skryptu.
 
 ---
 
@@ -99,7 +129,11 @@ Uruchom `codex-setup` ponownie, gdy:
 
 ## Skrypty (`my/scripts/`)
 
-Skrypty Pythona w katalogu `my/scripts/`, uruchamiane bezpośrednio przez BDOS. Nie są skillami `SKILL.md`.
+Skrypty Pythona w katalogu `my/scripts/`, uruchamiane bezpośrednio. Nie są skillami `SKILL.md`.
+
+### `sync_agents.py`
+
+Synchronizuje skille i komendy BDOS do Gemini CLI i Codex. Szczegóły w sekcji [Konfiguracja Gemini i Codex](#konfiguracja-gemini-i-codex).
 
 ### `exclude_content_labels.py`
 
@@ -186,10 +220,10 @@ Przykład na macOS lub Linux:
 cp -R /sciezka/do/BDOS-addons/my/skills/* /sciezka/do/BDOS-AI/my/skills/
 ```
 
-Po skopiowaniu przejdź do repo BDOS AI i odśwież konfigurację:
+Po skopiowaniu przejdź do repo BDOS AI i uruchom synchronizację:
 
 ```bash
-bdos update --regenerate
+.venv/Scripts/python.exe my/scripts/sync_agents.py
 ```
 
 ### Opcja 2 - sklonuj to repo obok BDOS AI i kopiuj z niego
@@ -205,28 +239,20 @@ Kopię BDOS AI można nabyć na https://bdos.ai/
 Następnie kopiuj wybrane skille z `BDOS-addons/my/skills/` do `BDOS-AI/my/skills/` i uruchamiaj:
 
 ```bash
-cd BDOS-AI
-bdos update --regenerate
+.venv/Scripts/python.exe my/scripts/sync_agents.py
 ```
 
 ## Aktywacja po instalacji
 
-Samo skopiowanie plików nie wystarczy. Po dodaniu skilli do BDOS uruchom w repo projektu:
+Po skopiowaniu skilli uruchom skrypt synchronizacji w repo projektu:
 
 ```bash
-bdos update --regenerate
+.venv/Scripts/python.exe my/scripts/sync_agents.py
 ```
 
-Potem użyj odpowiedniego skilla:
+Skrypt zsynchronizuje skille do `.gemini/skills/` i `.agents/skills/` oraz wygeneruje `GEMINI.md` i `AGENTS.md`.
 
-- dla Gemini CLI: uruchom `gemini-setup`
-- dla Codexa: uruchom `codex-setup`
-
-## Jak używać skilli
-
-Po instalacji możesz poprosić agenta o konfigurację odpowiedniego środowiska.
-
-Przykłady:
+Alternatywnie możesz poprosić agenta Claude Code:
 
 ```text
 Uruchom gemini-setup
@@ -236,23 +262,16 @@ Uruchom gemini-setup
 Uruchom codex-setup
 ```
 
-Jeśli agent obsługuje jawne wywołanie przez ścieżkę, możesz wskazać plik bezpośrednio:
-
-```text
-@my/skills/gemini-setup/SKILL.md
-```
-
-```text
-@my/skills/codex-setup/SKILL.md
-```
-
 ## Aktualizacja
 
-Gdy zmienisz zawartość któregoś skilla:
+Gdy zmienisz zawartość któregoś skilla lub zaktualizujesz BDOS:
 
 1. Podmień pliki w `BDOS-AI/my/skills/`
-2. Uruchom `bdos update --regenerate`
-3. Ponownie uruchom `gemini-setup` albo `codex-setup`, zależnie od klienta
+2. Uruchom skrypt synchronizacji:
+
+```bash
+.venv/Scripts/python.exe my/scripts/sync_agents.py
+```
 
 ## Uwagi
 
