@@ -20,18 +20,21 @@ my/
   AGENTS.md                  # prywatne instrukcje użytkownika dla Codexa
 ```
 
-Pliki generowane przez `sync_agents.py` (nie edytuj ręcznie):
+Pliki generowane przez `sync_agents.py` w **katalogu głównym projektu BDOS AI** (nie edytuj ręcznie):
 
 ```text
-GEMINI.md                    # CLAUDE.md + skille + my/GEMINI.md
-AGENTS.md                    # CLAUDE.md + skille + my/AGENTS.md
-.gemini/
-  skills/<name>/SKILL.md
-  commands/<name>.md
-.agents/
-  skills/<name>/SKILL.md
-  commands/<name>.md
+BDOS-AI/                     ← katalog główny projektu BDOS AI
+  GEMINI.md                  # CLAUDE.md + skille + my/GEMINI.md
+  AGENTS.md                  # CLAUDE.md + skille + my/AGENTS.md
+  .gemini/
+    skills/<name>/SKILL.md
+    commands/<name>.md
+  .agents/
+    skills/<name>/SKILL.md
+    commands/<name>.md
 ```
+
+Skrypt lokalizuje katalog główny projektu na podstawie własnej ścieżki (`my/scripts/sync_agents.py` → trzy poziomy wyżej = katalog projektu).
 
 ---
 
@@ -40,6 +43,8 @@ AGENTS.md                    # CLAUDE.md + skille + my/AGENTS.md
 Skrypt `my/scripts/sync_agents.py` synchronizuje skille i komendy BDOS do Gemini CLI i Codex oraz generuje pliki konfiguracyjne dla obu klientów.
 
 ### Co robi skrypt
+
+Wszystkie ścieżki poniżej są względem **katalogu głównego projektu BDOS AI** (tam gdzie jest `CLAUDE.md`):
 
 1. Zbiera skille z `bdos/data/claude/skills/` i `my/skills/`
 2. Zbiera komendy z `bdos/data/claude/commands/` i `my/commands/`

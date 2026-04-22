@@ -37,7 +37,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 SKILL_SOURCES = [
     ROOT / "bdos" / "data" / "claude" / "skills",

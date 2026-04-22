@@ -1,10 +1,10 @@
 ---
-description: Setup Codex for BDOS by installing BDOS skills into .agents/skills and generating AGENTS.md — runs my/scripts/myskills.py
+description: Setup Codex for BDOS by installing BDOS skills into .agents/skills and generating AGENTS.md — runs my/scripts/sync_agents.py
 ---
 
 # Setup Codex dla BDOS
 
-Uruchamia `my/scripts/myskills.py`, który:
+Uruchamia `my/scripts/sync_agents.py`, który:
 - kopiuje skille BDOS do `.agents/skills/`
 - kopiuje komendy do `.agents/commands/`
 - generuje `AGENTS.md` na bazie `CLAUDE.md`
@@ -15,7 +15,7 @@ Uruchamia `my/scripts/myskills.py`, który:
 ```python
 import sys, subprocess
 result = subprocess.run(
-    [sys.executable, "my/scripts/myskills.py"],
+    [sys.executable, "my/scripts/sync_agents.py"],
     capture_output=True, text=True, encoding="utf-8"
 )
 print(result.stdout)
@@ -33,7 +33,7 @@ if result.returncode != 0:
 
 Żeby uruchomić z flagą, zmień wywołanie na np.:
 ```python
-subprocess.run([sys.executable, "my/scripts/myskills.py", "--check"], ...)
+subprocess.run([sys.executable, "my/scripts/sync_agents.py", "--check"], ...)
 ```
 
 ## Kiedy uruchamiać

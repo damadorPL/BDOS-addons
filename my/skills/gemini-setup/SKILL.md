@@ -1,10 +1,10 @@
 ---
-description: Set up Gemini CLI for BDOS by syncing skills and generating GEMINI.md — runs my/scripts/myskills.py
+description: Set up Gemini CLI for BDOS by syncing skills and generating GEMINI.md — runs my/scripts/sync_agents.py
 ---
 
 # Setup Gemini CLI dla BDOS
 
-Uruchamia `my/scripts/myskills.py`, który:
+Uruchamia `my/scripts/sync_agents.py`, który:
 - kopiuje skille BDOS do `.gemini/skills/`
 - kopiuje komendy do `.gemini/commands/`
 - generuje `GEMINI.md` na bazie `CLAUDE.md`
@@ -15,7 +15,7 @@ Uruchamia `my/scripts/myskills.py`, który:
 ```python
 import sys, subprocess
 result = subprocess.run(
-    [sys.executable, "my/scripts/myskills.py"],
+    [sys.executable, "my/scripts/sync_agents.py"],
     capture_output=True, text=True, encoding="utf-8"
 )
 print(result.stdout)
@@ -33,7 +33,7 @@ if result.returncode != 0:
 
 Żeby uruchomić z flagą, zmień wywołanie na np.:
 ```python
-subprocess.run([sys.executable, "my/scripts/myskills.py", "--check"], ...)
+subprocess.run([sys.executable, "my/scripts/sync_agents.py", "--check"], ...)
 ```
 
 ## Kiedy uruchamiać
